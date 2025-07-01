@@ -42,3 +42,12 @@ android {
 flutter {
     source = "../.."
 }
+
+
+dependencies {
+    implementation("androidx.annotation:annotation:1.2.0")
+    // Excluye sign_in_with_apple del build de Android
+    configurations.all {
+        exclude(group = "com.aboutyou.dart_packages", module = "sign_in_with_apple")
+    }
+}
