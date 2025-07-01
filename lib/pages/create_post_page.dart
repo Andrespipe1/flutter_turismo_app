@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'dart:io' show File;
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:uuid/uuid.dart';
 import '../services/supabase_service.dart';
 
 class CreatePostPage extends StatefulWidget {
@@ -52,10 +55,12 @@ class _CreatePostPageState extends State<CreatePostPage> {
         return;
       }
       final postId = insertRes.first['id'];
-      for (final img in images) {
+      final uuid = Uuid();
+      for (int i = 0; i < images.length; i++) {
+        final img = images[i];
         final bytes = await img.readAsBytes();
-        final fileName = '${DateTime.now().millisecondsSinceEpoch}_${img.name}';
-        final storageRes = await Supabase.instance.client.storage.from('photos').uploadBinary(fileName, bytes);
+        final fileName = '${DateTime.now().millisecondsSinceEpoch}_${i}_${uuid.v4()}_${img.name}';
+        await Supabase.instance.client.storage.from('photos').uploadBinary(fileName, bytes);
         final publicUrl = Supabase.instance.client.storage.from('photos').getPublicUrl(fileName);
         await Supabase.instance.client.from('photos').insert({
           'post_id': postId,
@@ -130,7 +135,9 @@ class _CreatePostPageState extends State<CreatePostPage> {
                           children: [
                             ...images.map((img) => ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
-                                  child: Image.network(img.path, width: 80, height: 80, fit: BoxFit.cover),
+                                  child: kIsWeb
+                                      ? Image.network(img.path, width: 80, height: 80, fit: BoxFit.cover)
+                                      : Image.file(File(img.path), width: 80, height: 80, fit: BoxFit.cover),
                                 )),
                             if (images.length < 5)
                               GestureDetector(

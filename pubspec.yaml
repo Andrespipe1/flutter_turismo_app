@@ -16,6 +16,7 @@ dependencies:
   cached_network_image: ^3.3.1
   # Para UI moderna
   google_fonts: ^6.1.0
+  uuid: ^4.3.3
 dev_dependencies:
   flutter_test:
     sdk: flutter
