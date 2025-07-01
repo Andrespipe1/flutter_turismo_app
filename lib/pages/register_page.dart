@@ -18,20 +18,50 @@ class _RegisterPageState extends State<RegisterPage> {
 
   Future<void> register() async {
     setState(() { loading = true; error = null; });
-    final res = await Supabase.instance.client.auth.signUp(
-      email: emailController.text,
-      password: passController.text,
-    );
-    if (res.user != null) {
-      // Guarda el rol en la tabla roles
-      await Supabase.instance.client.from('roles').insert({
-        'user_id': res.user!.id,
-        'role': role,
-      });
-    } else {
-      setState(() { error = "No se pudo registrar"; });
+    try {
+      final res = await Supabase.instance.client.auth.signUp(
+        email: emailController.text,
+        password: passController.text,
+      );
+      if (res.user != null) {
+        // Guarda el rol en la tabla roles
+        await Supabase.instance.client.from('roles').insert({
+          'user_id': res.user!.id,
+          'role': role,
+        });
+        setState(() {
+          error = null;
+        });
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Registro exitoso'),
+            content: const Text('Revisa tu email para confirmar tu cuenta antes de iniciar sesión.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  widget.onLoginTap();
+                },
+                child: const Text('Aceptar'),
+              ),
+            ],
+          ),
+        );
+      }
+    } on AuthException catch (e) {
+      if (e.message.contains('invalid email')) {
+        setState(() { error = 'Correo inválido.'; });
+      } else if (e.message.contains('already registered')) {
+        setState(() { error = 'La cuenta ya está registrada.'; });
+      } else {
+        setState(() { error = e.message; });
+      }
+    } catch (e) {
+      setState(() { error = 'Error inesperado: $e'; });
+    } finally {
+      setState(() { loading = false; });
     }
-    setState(() { loading = false; });
   }
 
   @override

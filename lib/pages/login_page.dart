@@ -17,14 +17,29 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> login() async {
     setState(() { loading = true; error = null; });
-    final res = await Supabase.instance.client.auth.signInWithPassword(
-      email: emailController.text,
-      password: passController.text,
-    );
-    if (res.user == null) {
-      setState(() { error = "Correo o contraseña incorrectos"; });
+    try {
+      final res = await Supabase.instance.client.auth.signInWithPassword(
+        email: emailController.text,
+        password: passController.text,
+      );
+      if (res.user == null) {
+        setState(() { error = "Correo o contraseña incorrectos"; });
+      } else if (res.user != null && !(res.user!.emailConfirmedAt != null)) {
+        setState(() { error = "Debes confirmar tu correo antes de iniciar sesión."; });
+      }
+    } on AuthException catch (e) {
+      if (e.message.contains('Invalid login credentials')) {
+        setState(() { error = 'Correo o contraseña incorrectos.'; });
+      } else if (e.message.contains('Email not confirmed')) {
+        setState(() { error = 'Debes confirmar tu correo antes de iniciar sesión.'; });
+      } else {
+        setState(() { error = e.message; });
+      }
+    } catch (e) {
+      setState(() { error = 'Error inesperado: $e'; });
+    } finally {
+      setState(() { loading = false; });
     }
-    setState(() { loading = false; });
   }
 
   @override
