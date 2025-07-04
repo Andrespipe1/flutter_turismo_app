@@ -95,14 +95,14 @@ Este proyecto es de uso académico y demostrativo.
 
 ## 📱 Aplicación en funcionamiento:
 
-![Sin título](https://github.com/user-attachments/assets/14b1353e-b397-4dde-a3bf-46a5465667dd)
+<img src="https://github.com/user-attachments/assets/14b1353e-b397-4dde-a3bf-46a5465667dd" width="300"/>
 
-![Sin título](https://github.com/user-attachments/assets/150a1cfd-32cf-46fa-9860-bebd61f21a85)
+<img src="https://github.com/user-attachments/assets/150a1cfd-32cf-46fa-9860-bebd61f21a85" width="300"/>
 
-![Sin título](https://github.com/user-attachments/assets/9a62a2d3-f0f8-490a-8aac-51817a2c012c)
+<img src="https://github.com/user-attachments/assets/9a62a2d3-f0f8-490a-8aac-51817a2c012c" width="300"/>
 
-![Sin título](https://github.com/user-attachments/assets/0deba0ce-5179-45e8-9f25-224b05737c81)
+<img src="https://github.com/user-attachments/assets/0deba0ce-5179-45e8-9f25-224b05737c81" width="300"/>
 
-![Sin título](https://github.com/user-attachments/assets/abb6d05c-1f0f-4215-9550-cdd92091865e)
+<img src="https://github.com/user-attachments/assets/abb6d05c-1f0f-4215-9550-cdd92091865e" width="300"/>
 
 
